@@ -2,229 +2,215 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Today at Santa’s Workshop</title>
+<title>Today at the North Pole</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
   body {
     margin: 0;
+    background: #052e16;
+    color: #fef3c7;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    background: linear-gradient(180deg, #052e16, #022c22);
-    color: #ecfeff;
     overflow: hidden;
-  }
-
-  /* SAFE AREA */
-  .safe {
-    transform: scale(0.96);
-    transform-origin: top left;
-    width: 104%;
-    height: 104%;
   }
 
   .page {
     display: grid;
-    grid-template-rows: 1fr 64px;
+    grid-template-rows: auto 1fr 48px;
     height: 100vh;
-  }
-
-  .container {
-    display: grid;
-    grid-template-columns: 35% 65%;
-    padding: 40px;
+    padding: 4vh 4vw;
     box-sizing: border-box;
-    gap: 40px;
   }
 
-  .left {
+  header {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2vh;
   }
 
-  .time {
-    font-size: 96px;
-    font-weight: 800;
-    letter-spacing: -2px;
-    color: #fef3c7;
-  }
-
-  .date {
-    font-size: 28px;
-    opacity: 0.9;
-  }
-
-  .weather {
-    margin-top: 40px;
-    padding: 24px;
-    background: rgba(2, 44, 34, 0.85);
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .weather h3 {
-    margin: 0 0 12px 0;
-    font-size: 24px;
-    color: #fef3c7;
-  }
-
-  .weather .temp {
-    font-size: 64px;
+  .title {
+    font-size: 4.5vw;
     font-weight: 700;
   }
 
-  .weather .details {
-    font-size: 20px;
+  .datetime {
+    text-align: right;
+  }
+
+  .time {
+    font-size: 3.5vw;
+    font-weight: 700;
+  }
+
+  .date {
+    font-size: 2vw;
     opacity: 0.9;
   }
 
-  .right h1 {
-    margin-top: 0;
-    font-size: 52px;
-    margin-bottom: 24px;
-    color: #fef3c7;
+  .countdown {
+    margin-top: 0.6vh;
+    font-size: 2vw;
+    font-weight: 600;
   }
 
-  .section {
-    margin-bottom: 32px;
+  .santa-quote {
+    margin-top: 0.6vh;
+    font-size: 1.7vw;
+    font-style: italic;
+    color: #dcfce7;
+    opacity: 0.9;
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3vw;
+  }
+
+  .panel {
+    background: rgba(0,0,0,0.25);
+    border-radius: 1.5vw;
+    padding: 2.5vh 2vw;
+  }
+
+  .panel h2 {
+    margin: 0 0 1.5vh 0;
+    font-size: 2.6vw;
+    font-weight: 600;
   }
 
   .item {
-    background: rgba(2, 44, 34, 0.85);
-    padding: 18px 24px;
-    border-radius: 16px;
-    margin-bottom: 12px;
-    font-size: 22px;
-    border-left: 6px solid #22c55e;
+    font-size: 2.1vw;
+    margin-bottom: 1.2vh;
   }
 
-  .notice {
-    border-left-color: #f87171;
-  }
-
-  .muted {
-    opacity: 0.7;
-    font-size: 22px;
-  }
-
-  /* TICKER */
-  #ticker {
-    width: 100%;
-    height: 64px;
-    background: #022c22;
-    border-top: 1px solid rgba(255,255,255,0.15);
+  footer {
     overflow: hidden;
-  }
-
-  #tickerContent {
-    display: inline-block;
     white-space: nowrap;
-    padding-left: 100%;
-    font-size: 24px;
-    line-height: 64px;
-    animation: ticker-scroll 90s linear infinite;
-    color: #fef3c7;
+    font-size: 2vw;
+    opacity: 0.95;
   }
 
-  @keyframes ticker-scroll {
+  .ticker {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll 90s linear infinite;
+  }
+
+  @keyframes scroll {
     from { transform: translateX(0); }
-    to   { transform: translateX(-100%); }
+    to { transform: translateX(-100%); }
   }
 </style>
 </head>
 
 <body>
-<div class="safe">
+
 <div class="page">
 
-  <!-- MAIN CONTENT -->
-  <div class="container">
+  <header>
+    <div class="title">🎄 Today at the North Pole</div>
+    <div class="datetime">
+      <div class="time" id="time"></div>
+      <div class="date" id="date"></div>
+      <div class="countdown" id="countdown"></div>
+      <div class="santa-quote" id="santaQuote"></div>
+    </div>
+  </header>
 
-    <!-- LEFT -->
-    <div class="left">
-      <div>
-        <div class="time" id="time">--:--</div>
-        <div class="date" id="date">Loading…</div>
-      </div>
+  <div class="content">
 
-      <div class="weather">
-        <h3>North Pole Weather</h3>
-        <div class="temp">❄️ 14°</div>
-        <div class="details">
-          Light snowfall • Reindeer-friendly visibility
-        </div>
-      </div>
+    <div class="panel">
+      <h2>❄️ Workshop Schedule</h2>
+      <div class="item">8:00 AM — Elf shift begins</div>
+      <div class="item">10:30 AM — Toy quality inspection</div>
+      <div class="item">1:00 PM — Reindeer training flight</div>
+      <div class="item">3:30 PM — Cookie & cocoa break</div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="right">
-      <h1>Today at Santa’s Workshop</h1>
-
-      <div class="section" id="eventsSection"></div>
-
-      <div class="section" id="noticesSection"></div>
+    <div class="panel">
+      <h2>🎁 Notices</h2>
+      <div class="item">Label presents before sleigh loading</div>
+      <div class="item">Extra mittens available in the break room</div>
+      <div class="item">Sleigh maintenance complete ✔</div>
     </div>
 
   </div>
 
-  <!-- TICKER -->
-  <div id="ticker">
-    <div id="tickerContent"></div>
-  </div>
+  <footer>
+    <div class="ticker" id="ticker"></div>
+  </footer>
 
-</div>
 </div>
 
 <script>
 /* CLOCK */
-function updateTime() {
+function updateClock() {
   const now = new Date();
   document.getElementById("time").textContent =
     now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   document.getElementById("date").textContent =
     now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
 }
-setInterval(updateTime, 1000);
-updateTime();
+setInterval(updateClock, 1000);
+updateClock();
 
-/* EVENTS */
-const events = [
-  { time: "8:00 AM", title: "Elf Shift Begins – Toy Assembly Line" },
-  { time: "10:30 AM", title: "Quality Control: Teddy Bear Inspection" },
-  { time: "1:00 PM", title: "Reindeer Training Flight (Weather Permitting)" },
-  { time: "3:30 PM", title: "Cookie Taste Test Committee" }
+/* CHRISTMAS COUNTDOWN */
+function updateCountdown() {
+  const now = new Date();
+  const year = now.getFullYear();
+
+  let christmas = new Date(year, 11, 25, 0, 0, 0);
+  if (now > christmas) {
+    christmas = new Date(year + 1, 11, 25, 0, 0, 0);
+  }
+
+  const diff = christmas - now;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+
+  let text = `🎁 ${days} days ${hours} hours ${minutes} minutes until Christmas`;
+
+  if (days === 0) {
+    text = "🎄 Christmas Eve — Santa is on the way!";
+  }
+
+  document.getElementById("countdown").textContent = text;
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
+/* SANTA QUOTES */
+const santaQuotes = [
+  "Every toy made with care carries a little Christmas magic.",
+  "Remember, elves — it’s not just toys we deliver, it’s joy.",
+  "Great teamwork makes Christmas possible.",
+  "A cheerful heart works faster than cold hands.",
+  "One more toy, one more smile.",
+  "Even the smallest elf makes a big difference.",
+  "Pride in your work is the greatest gift you give."
 ];
 
-const eventsSection = document.getElementById("eventsSection");
-events.forEach(e => {
-  eventsSection.innerHTML += `
-    <div class="item">${e.time} — ${e.title}</div>
-  `;
-});
-
-/* NOTICES */
-const notices = [
-  { text: "Reminder: Label all presents clearly before sleigh loading" },
-  { text: "Hot cocoa available all day in the break room" }
-];
-
-const noticesSection = document.getElementById("noticesSection");
-notices.forEach(n => {
-  noticesSection.innerHTML += `
-    <div class="item notice">${n.text}</div>
-  `;
-});
+function rotateQuote() {
+  const quote = santaQuotes[Math.floor(Math.random() * santaQuotes.length)];
+  document.getElementById("santaQuote").textContent =
+    `"${quote}" — Santa 🎅`;
+}
+rotateQuote();
+setInterval(rotateQuote, 5 * 60 * 1000);
 
 /* TICKER */
 const headlines = [
-  "Santa confirms sleigh maintenance completed ahead of schedule",
-  "Elves report record toy output this season",
-  "Reindeer cleared for Christmas Eve flight",
-  "North Pole experiencing steady snowfall"
+  "Santa confirms sleigh is flight-ready",
+  "Elves report record toy production",
+  "Light snowfall expected through evening",
+  "Reindeer morale remains high"
 ];
 
-document.getElementById("tickerContent").textContent =
-  "🎄 North Pole News • " + headlines.join("   ❄️   ");
+document.getElementById("ticker").textContent =
+  "🎄 North Pole News • " + headlines.join(" ❄️ ");
 </script>
 
 </body>
