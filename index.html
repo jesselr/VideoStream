@@ -11,12 +11,13 @@
     font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     background: #0f172a;
     color: #e5e7eb;
+    overflow: hidden;
   }
 
   .container {
     display: grid;
     grid-template-columns: 35% 65%;
-    height: 100vh;
+    height: calc(100vh - 64px);
     padding: 40px;
     box-sizing: border-box;
     gap: 40px;
@@ -87,11 +88,39 @@
     opacity: 0.6;
     font-size: 22px;
   }
+
+  /* ---------- TICKER ---------- */
+  #ticker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background: #020617;
+    border-top: 1px solid #1e293b;
+    overflow: hidden;
+  }
+
+  #tickerContent {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    font-size: 24px;
+    line-height: 64px;
+    animation: ticker-scroll 75s linear infinite;
+  }
+
+  @keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
+  }
 </style>
 </head>
 
 <body>
+
 <div class="container">
+  <!-- LEFT COLUMN -->
   <div class="left">
     <div>
       <div class="time" id="time">--:--</div>
@@ -100,20 +129,26 @@
 
     <div class="weather">
       <h3>Weather</h3>
-      <div class="temp" id="temp">--°</div>
-      <div class="details" id="weatherDetails">Loading…</div>
+      <div class="temp" id="temp">31°</div>
+      <div class="details" id="weatherDetails">
+        Wind chill 22° • Snow possible
+      </div>
     </div>
   </div>
 
+  <!-- RIGHT COLUMN -->
   <div class="right">
     <h1>Today on Campus</h1>
 
-    <div class="section" id="eventsSection">
-      <div class="item muted">No major events today</div>
-    </div>
+    <div class="section" id="eventsSection"></div>
 
     <div class="section" id="noticesSection"></div>
   </div>
+</div>
+
+<!-- TICKER -->
+<div id="ticker">
+  <div id="tickerContent"></div>
 </div>
 
 <script>
@@ -128,20 +163,13 @@ function updateTime() {
 setInterval(updateTime, 1000);
 updateTime();
 
-/* ---------- WEATHER (FAKE DATA FOR NOW) ---------- */
-document.getElementById("temp").textContent = "31°";
-document.getElementById("weatherDetails").textContent =
-  "Wind chill 22° • Snow possible";
-
-/* ---------- EVENTS ---------- */
+/* ---------- EVENTS (EDIT THESE) ---------- */
 const events = [
   { time: "7:00 PM", title: "Men’s Basketball vs Wartburg" },
   { time: "8:30 PM", title: "Study Tables – Library" }
 ];
 
 const eventsSection = document.getElementById("eventsSection");
-eventsSection.innerHTML = "";
-
 if (events.length === 0) {
   eventsSection.innerHTML = `<div class="item muted">No major events today</div>`;
 } else {
@@ -152,17 +180,33 @@ if (events.length === 0) {
   });
 }
 
-/* ---------- NOTICES ---------- */
+/* ---------- NOTICES (EDIT THESE) ---------- */
 const notices = [
   { text: "Planned network maintenance tonight 11 PM–1 AM" }
 ];
 
 const noticesSection = document.getElementById("noticesSection");
-notices.forEach(n => {
-  noticesSection.innerHTML += `
-    <div class="item notice">${n.text}</div>
-  `;
-});
+if (notices.length === 0) {
+  noticesSection.style.display = "none";
+} else {
+  notices.forEach(n => {
+    noticesSection.innerHTML += `
+      <div class="item notice">${n.text}</div>
+    `;
+  });
+}
+
+/* ---------- NEWS TICKER (EDIT OR SWAP TO JSON LATER) ---------- */
+const headlines = [
+  "Winter weather advisory issued for central Iowa",
+  "Library extends hours during finals week",
+  "FAA reports delays at Chicago O’Hare",
+  "NASA prepares next Artemis mission test"
+];
+
+const ticker = document.getElementById("tickerContent");
+ticker.textContent = "📰 " + headlines.join("   •   ");
 </script>
+
 </body>
 </html>
