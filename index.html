@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Today at the North Pole</title>
+<title>North Pole Operations</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -54,12 +54,12 @@
     font-weight: 600;
   }
 
-  .santa-quote {
+  .quote {
     margin-top: 0.6vh;
     font-size: 1.7vw;
     font-style: italic;
     color: #dcfce7;
-    opacity: 0.9;
+    opacity: 0.95;
   }
 
   .content {
@@ -106,36 +106,28 @@
 </head>
 
 <body>
-
 <div class="page">
 
   <header>
-    <div class="title">🎄 Today at the North Pole</div>
+    <div class="title" id="title"></div>
     <div class="datetime">
       <div class="time" id="time"></div>
       <div class="date" id="date"></div>
       <div class="countdown" id="countdown"></div>
-      <div class="santa-quote" id="santaQuote"></div>
+      <div class="quote" id="quote"></div>
     </div>
   </header>
 
   <div class="content">
-
     <div class="panel">
-      <h2>❄️ Workshop Schedule</h2>
-      <div class="item">8:00 AM — Elf shift begins</div>
-      <div class="item">10:30 AM — Toy quality inspection</div>
-      <div class="item">1:00 PM — Reindeer training flight</div>
-      <div class="item">3:30 PM — Cookie & cocoa break</div>
+      <h2 id="scheduleTitle"></h2>
+      <div id="events"></div>
     </div>
 
     <div class="panel">
-      <h2>🎁 Notices</h2>
-      <div class="item">Label presents before sleigh loading</div>
-      <div class="item">Extra mittens available in the break room</div>
-      <div class="item">Sleigh maintenance complete ✔</div>
+      <h2 id="noticeTitle"></h2>
+      <div id="notices"></div>
     </div>
-
   </div>
 
   <footer>
@@ -156,61 +148,182 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-/* CHRISTMAS COUNTDOWN */
+/* COUNTDOWN */
 function updateCountdown() {
   const now = new Date();
   const year = now.getFullYear();
-
   let christmas = new Date(year, 11, 25, 0, 0, 0);
-  if (now > christmas) {
-    christmas = new Date(year + 1, 11, 25, 0, 0, 0);
-  }
+  if (now > christmas) christmas = new Date(year + 1, 11, 25, 0, 0, 0);
 
   const diff = christmas - now;
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
 
-  let text = `🎁 ${days} days ${hours} hours ${minutes} minutes until Christmas`;
-
-  if (days === 0) {
-    text = "🎄 Christmas Eve — Santa is on the way!";
-  }
-
-  document.getElementById("countdown").textContent = text;
+  document.getElementById("countdown").textContent =
+    `🎁 ${days} days ${hours} hours ${minutes} minutes until Christmas`;
 }
 updateCountdown();
 setInterval(updateCountdown, 60000);
 
-/* SANTA QUOTES */
-const santaQuotes = [
-  "Every toy made with care carries a little Christmas magic.",
-  "Remember, elves — it’s not just toys we deliver, it’s joy.",
-  "Great teamwork makes Christmas possible.",
-  "A cheerful heart works faster than cold hands.",
-  "One more toy, one more smile.",
-  "Even the smallest elf makes a big difference.",
-  "Pride in your work is the greatest gift you give."
-];
+/* DATE-BASED STORY PROGRESSION */
+const today = new Date();
+const day = today.getDate();
+
+let act;
+
+if (day <= 18) act = 1;
+else if (day <= 20) act = 2;
+else if (day <= 22) act = 3;
+else if (day === 23) act = 4;
+else act = 5;
+
+/* CONTENT BY ACT */
+const acts = {
+  1: {
+    title: "🎄 Today at the North Pole",
+    quote: [
+      "Every toy made with care carries a little Christmas magic.",
+      "Great teamwork makes Christmas possible."
+    ],
+    scheduleTitle: "❄️ Workshop Schedule",
+    events: [
+      "8:00 AM — Elf shift begins",
+      "10:30 AM — Toy quality inspection",
+      "1:00 PM — Reindeer training flight",
+      "3:30 PM — Cookie & cocoa break"
+    ],
+    noticeTitle: "🎁 Notices",
+    notices: [
+      "Label presents before sleigh loading",
+      "Extra mittens available in the break room"
+    ],
+    ticker: [
+      "North Pole operations running smoothly",
+      "Santa confirms sleigh maintenance on schedule"
+    ]
+  },
+
+  2: {
+    title: "🎄 Today at the North Pole",
+    quote: [
+      "Sugar cookies are technically fuel.",
+      "I reorganized the workshop by favorite colors. It helps.",
+      "Efficiency is festive if you believe hard enough."
+    ],
+    scheduleTitle: "❄️ Workshop Schedule (Mostly Accurate)",
+    events: [
+      "8:00 AM — Elf shift begins",
+      "10:30 AM — Extended snack quality inspection",
+      "1:00 PM — Reindeer training (fun laps included)"
+    ],
+    noticeTitle: "🎁 Notices",
+    notices: [
+      "Cocoa consumption slightly above normal",
+      "Unconfirmed reports of singing near conveyor belts"
+    ],
+    ticker: [
+      "Elf morale unusually high today",
+      "Cookie inventory under review"
+    ]
+  },
+
+  3: {
+    title: "🧝 Today at the North Pole (Managed by Elves)",
+    quote: [
+      "I found the keyboard and made improvements.",
+      "This button does something. I pressed it twice.",
+      "Productivity feels faster when music is involved."
+    ],
+    scheduleTitle: "❄️ Workshop Schedule (Elf Edition)",
+    events: [
+      "8:00 AM — Elf shift begins",
+      "9:15 AM — Mandatory candy cane tasting",
+      "1:00 PM — Reindeer training + cheering"
+    ],
+    noticeTitle: "🎁 Important Notices",
+    notices: [
+      "Keyboard privileges under discussion",
+      "Santa has questions"
+    ],
+    ticker: [
+      "North Pole IT investigating unauthorized updates",
+      "Elves deny responsibility while smiling"
+    ]
+  },
+
+  4: {
+    title: "🎅 Today at the North Pole (Santa Is Aware)",
+    quote: [
+      "Elves, please stop changing the signage.",
+      "— Santa",
+      "I changed it a little. For clarity.",
+      "— Definitely Not An Elf"
+    ],
+    scheduleTitle: "❄️ Workshop Schedule",
+    events: [
+      "ALL DAY — Final toy checks",
+      "4:00 PM — Sleigh loading",
+      "Early bedtime strongly encouraged"
+    ],
+    noticeTitle: "🎁 Notices",
+    notices: [
+      "Keyboard privileges revoked",
+      "Keyboard privileges mysteriously restored"
+    ],
+    ticker: [
+      "Santa requests system credentials be returned",
+      "Elves request snack-based amnesty"
+    ]
+  },
+
+  5: {
+    title: "🎄 North Pole Systems Restored",
+    quote: [
+      "Good work this season, elves.",
+      "Now go get some rest.",
+      "— Santa 🎅"
+    ],
+    scheduleTitle: "❄️ Christmas Day",
+    events: [
+      "All operations complete",
+      "Sleigh successfully deployed",
+      "Workshop quiet until next year"
+    ],
+    noticeTitle: "🎁 Message",
+    notices: [
+      "Merry Christmas to all",
+      "And to all a good night"
+    ],
+    ticker: [
+      "Sleigh flight confirmed successful",
+      "North Pole entering standby mode"
+    ]
+  }
+};
+
+/* RENDER */
+const content = acts[act];
+
+document.getElementById("title").textContent = content.title;
+document.getElementById("scheduleTitle").textContent = content.scheduleTitle;
+document.getElementById("noticeTitle").textContent = content.noticeTitle;
+
+const eventsEl = document.getElementById("events");
+content.events.forEach(e => eventsEl.innerHTML += `<div class="item">${e}</div>`);
+
+const noticesEl = document.getElementById("notices");
+content.notices.forEach(n => noticesEl.innerHTML += `<div class="item">${n}</div>`);
+
+const ticker = document.getElementById("ticker");
+ticker.textContent = content.ticker.join(" ❄️ ");
 
 function rotateQuote() {
-  const quote = santaQuotes[Math.floor(Math.random() * santaQuotes.length)];
-  document.getElementById("santaQuote").textContent =
-    `"${quote}" — Santa 🎅`;
+  const q = content.quote[Math.floor(Math.random() * content.quote.length)];
+  document.getElementById("quote").textContent = `"${q}"`;
 }
 rotateQuote();
-setInterval(rotateQuote, 5 * 60 * 1000);
-
-/* TICKER */
-const headlines = [
-  "Santa confirms sleigh is flight-ready",
-  "Elves report record toy production",
-  "Light snowfall expected through evening",
-  "Reindeer morale remains high"
-];
-
-document.getElementById("ticker").textContent =
-  "🎄 North Pole News • " + headlines.join(" ❄️ ");
+setInterval(rotateQuote, 15 * 60 * 1000);
 </script>
 
 </body>
