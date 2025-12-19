@@ -14,11 +14,49 @@
     overflow: hidden;
   }
 
+  /* 🎄 CHRISTMAS LIGHTS */
+  .lights {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 1vh 2vw;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .lights span {
+    width: 1.2vw;
+    height: 1.2vw;
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: 50%;
+    background: red;
+    box-shadow: 0 0 12px currentColor;
+    animation: twinkle 3s infinite ease-in-out;
+  }
+
+  .lights span:nth-child(4n+1) { background: #ef4444; }
+  .lights span:nth-child(4n+2) { background: #22c55e; }
+  .lights span:nth-child(4n+3) { background: #fde047; }
+  .lights span:nth-child(4n)   { background: #60a5fa; }
+
+  .lights span:nth-child(even) {
+    animation-delay: 1.5s;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
   .page {
     display: grid;
     grid-template-rows: auto 1fr 48px;
     height: 100vh;
-    padding: 4vh 4vw;
+    padding: 6vh 4vw 4vh; /* extra top space for lights */
     box-sizing: border-box;
   }
 
@@ -106,6 +144,14 @@
 </head>
 
 <body>
+
+<!-- 🎄 LIGHT STRAND -->
+<div class="lights">
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
 <div class="page">
 
 <header>
@@ -166,72 +212,34 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 60000);
 
-/* STORY — FIXED START DATE */
-const STORY_START = new Date(2025, 11, 20); // FRIDAY
-STORY_START.setHours(0,0,0,0);
-
-const today = new Date();
-today.setHours(0,0,0,0);
-
-const dayOffset = Math.max(
-  0,
-  Math.floor((today - STORY_START) / 86400000)
-);
-
-/* ACT 0 = normal-ish, ACT 1 = ELF TOOK OVER */
-const acts = [
-  {
-    title: "🎄 Today at the North Pole",
-    quote: [
-      "Hard work builds character.",
-      "Sugar cookies improve morale."
-    ],
-    scheduleTitle: "❄️ Workshop Schedule",
-    events: [
-      "8:00 AM — Elf shift begins",
-      "10:30 AM — Toy inspection",
-      "3:30 PM — Cookie & cocoa break"
-    ],
-    noticeTitle: "🎁 Notices",
-    notices: [
-      "Please return tools to labeled shelves",
-      "No singing near conveyor belts"
-    ],
-    ticker: [
-      "Workshop operations running smoothly",
-      "Cookie inventory stable"
-    ]
-  },
-  {
-    title: "🧝 Today at the North Pole (Managed by Elves)",
-    quote: [
-      "I reorganized the schedule. It makes sense now.",
-      "This button looked important so I pressed it.",
-      "Productivity improves with music."
-    ],
-    scheduleTitle: "❄️ Workshop Schedule (Elf Edition)",
-    events: [
-      "8:00 AM — Elf shift begins",
-      "9:15 AM — Mandatory candy cane tasting",
-      "3:30 PM — Cookie & cocoa break (extended)",
-      "After 4:00 PM — Festive decision making"
-    ],
-    noticeTitle: "🎁 Important Notices",
-    notices: [
-      "Keyboard privileges under review",
-      "Santa has questions",
-      "Elves have answers (mostly)"
-    ],
-    ticker: [
-      "North Pole IT investigating unauthorized changes",
-      "Elves deny involvement while smiling",
-      "Santa requests system credentials"
-    ]
-  }
-];
-
-const act = dayOffset >= 0 ? 1 : 0;
-const content = acts[act];
+/* FRIDAY PAYOFF — ELF TOOK OVER */
+const content = {
+  title: "🧝 Today at the North Pole (Managed by Elves)",
+  quotes: [
+    "I reorganized the schedule. It makes sense now.",
+    "This button looked important so I pressed it.",
+    "Productivity improves with music.",
+    "Santa said stop. I heard maybe."
+  ],
+  scheduleTitle: "❄️ Workshop Schedule (Elf Edition)",
+  events: [
+    "8:00 AM — Elf shift begins",
+    "9:15 AM — Mandatory candy cane tasting",
+    "3:30 PM — Cookie & cocoa break (extended)",
+    "After 4:00 PM — Festive decision making"
+  ],
+  noticeTitle: "🎁 Important Notices",
+  notices: [
+    "Keyboard privileges under review",
+    "Santa has questions",
+    "Elves have answers (mostly)"
+  ],
+  ticker: [
+    "North Pole IT investigating unauthorized changes",
+    "Elves deny involvement while smiling",
+    "Santa requests system credentials"
+  ]
+};
 
 /* RENDER */
 document.getElementById("title").textContent = content.title;
@@ -250,7 +258,7 @@ document.getElementById("ticker").textContent =
   content.ticker.join(" ❄️ ");
 
 function rotateQuote() {
-  const q = content.quote[Math.floor(Math.random() * content.quote.length)];
+  const q = content.quotes[Math.floor(Math.random() * content.quotes.length)];
   document.getElementById("quote").textContent = `"${q}"`;
 }
 rotateQuote();
