@@ -166,22 +166,25 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 60000);
 
-/* COMPRESSED STORY LOGIC */
-const start = new Date();
-start.setHours(0,0,0,0);
+/* STORY — FIXED START DATE */
+const STORY_START = new Date(2025, 11, 20); // FRIDAY
+STORY_START.setHours(0,0,0,0);
 
 const today = new Date();
 today.setHours(0,0,0,0);
 
-const dayOffset = Math.floor((today - start) / 86400000);
+const dayOffset = Math.max(
+  0,
+  Math.floor((today - STORY_START) / 86400000)
+);
 
-/* ACTS */
+/* ACT 0 = normal-ish, ACT 1 = ELF TOOK OVER */
 const acts = [
   {
     title: "🎄 Today at the North Pole",
     quote: [
       "Hard work builds character.",
-      "Sugar cookies count as morale."
+      "Sugar cookies improve morale."
     ],
     scheduleTitle: "❄️ Workshop Schedule",
     events: [
@@ -195,14 +198,14 @@ const acts = [
       "No singing near conveyor belts"
     ],
     ticker: [
-      "Elf morale reported higher than usual",
-      "Cookie inventory slightly reduced"
+      "Workshop operations running smoothly",
+      "Cookie inventory stable"
     ]
   },
   {
     title: "🧝 Today at the North Pole (Managed by Elves)",
     quote: [
-      "I reorganized the schedule. It makes sense to me.",
+      "I reorganized the schedule. It makes sense now.",
       "This button looked important so I pressed it.",
       "Productivity improves with music."
     ],
@@ -210,21 +213,24 @@ const acts = [
     events: [
       "8:00 AM — Elf shift begins",
       "9:15 AM — Mandatory candy cane tasting",
-      "3:30 PM — Cookie & cocoa break (extended)"
+      "3:30 PM — Cookie & cocoa break (extended)",
+      "After 4:00 PM — Festive decision making"
     ],
     noticeTitle: "🎁 Important Notices",
     notices: [
       "Keyboard privileges under review",
-      "Santa has questions"
+      "Santa has questions",
+      "Elves have answers (mostly)"
     ],
     ticker: [
       "North Pole IT investigating unauthorized changes",
-      "Elves deny involvement while smiling"
+      "Elves deny involvement while smiling",
+      "Santa requests system credentials"
     ]
   }
 ];
 
-const act = dayOffset >= 1 ? 1 : 0;
+const act = dayOffset >= 0 ? 1 : 0;
 const content = acts[act];
 
 /* RENDER */
